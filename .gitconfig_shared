@@ -1,0 +1,68 @@
+[core]
+  excludesfile = ~/.essentials/global_ignore
+  editor = nvim
+[pager]
+  log  = perl $HOME/clones/diff-so-fancy/diff-so-fancy | less
+  show = perl $HOME/clones/diff-so-fancy/diff-so-fancy | less
+  diff = perl $HOME/clones/diff-so-fancy/diff-so-fancy | less
+[color]
+  ui = always
+[interactive]
+  singleKey = true
+  syntax-theme = Monokai Extended
+[status]
+  submoduleSummary = true
+[mergetool "nvim"]
+  cmd = nvim -d
+# set "nvim" as tool for merging
+[merge]
+  tool = nvim
+# automatically launch merge tool without displaying a prompt
+[mergetool]
+  prompt = false
+
+# [diff]
+#   tool = nvimdiff
+# [difftool "nvimdiff"]
+#   cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+# # set "nvim" as tool for merging
+# [difftool]
+#   prompt = true
+
+[diff]
+  tool = meld
+[difftool]
+  prompt = false
+[difftool "meld"]
+  cmd = meld "$LOCAL" "$REMOTE"
+
+[alias]
+  dta = difftool --dir-diff 
+  cne = commit --amend --no-edit
+
+[push]
+  default = current
+[init]
+  templatedir = ~/.essentials/git-templates
+  defaultBranch = main
+[pull]
+  rebase = false
+[url "git@github.com:"]
+  insteadOf = https://github.com/
+[color "diff-highlight"]
+  oldNormal = brightred bold
+  oldHighlight = brightred bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
+[color "diff"]
+  meta = 11
+  frag = magenta bold
+  func = 146 bold
+  commit = yellow bold
+  old = red bold
+  new = green bold
+  whitespace = red reverse
+[color "status"]
+  changed = blue
+  untracked = green
+  added = green

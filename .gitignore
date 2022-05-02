@@ -1,0 +1,5 @@
+.config/nvim/plugin/packer_compiled.lua
+.vim/view
+bin/td
+.emacs.d/*
+.vim/.netrwhist

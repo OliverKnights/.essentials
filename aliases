@@ -1,0 +1,89 @@
+alias ls="ls --color=auto"
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias ll='ls -alF'
+
+alias cd='cl'
+
+alias nnn='nnn -H -e'
+
+alias k="kubectl"
+
+# tig
+alias ts="tig status"
+
+alias nvim="NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim"
+
+# cd (cXXX)
+alias cdot="cd $HOME/.dots"
+
+# Some sane grep options
+alias grep="grep --color=auto --binary-files=without-match --exclude=tags --exclude-dir=.git --exclude-dir=node_modules --exclude='*.tar.gz'"
+
+# Docker (dX[X])
+alias ds="docker stop"
+alias drm="docker rm"
+alias dt="docker start"
+alias dps="docker ps"
+alias dsa='docker stop $(docker ps -a -q)'
+alias dra='docker rm $(docker ps -a -q)'
+alias da="docker attach --sig-proxy=false"
+alias dl="docker logs"
+alias dlf="docker logs -f"
+
+# Docker compose (dc[XX])
+alias dc="docker-compose"
+alias dcl="docker-compose logs"
+alias dcu="docker-compose up"
+alias dcud="docker-compose up -d"
+alias dcb="docker-compose build"
+alias dcs="docker-compose stop"
+alias dcd="docker-compose down"
+
+# Go (go[XX])
+alias got="go test"
+alias gota="go test ./..."
+alias goda="go doc -all -u"
+alias gomv="go mod vendor"
+alias gomt="go mod tidy"
+alias gomd="go mod download"
+
+# Git (g[XXX])
+alias ga="git add"
+alias gl="git log"
+alias gaa="git add . && git status"
+alias gp="git push"
+alias gc="git commit -v"
+alias gch="git checkout"
+alias gchb="git checkout -b"
+alias gs="git status"
+alias gf="git fetch"
+alias gu="git pull"
+alias gd="git diff"
+alias gds="git diff --staged"
+alias gm="git merge"
+alias gst="git stash"
+alias gstp="git stash push"
+alias gsto="git stash pop"
+alias gzm="git-merge"
+alias gzh="git-checkout"
+alias gcd='cd $(git rev-parse --show-toplevel)'
+
+# Go
+alias missedlines='grep -v -e " 1$" cover.out'
+
+# Pass pa[XX]
+alias pac='pass show -c'
+alias pas='pass show'
+alias pag='pass generate -c'
+alias pai='pass insert'
+
+# JWT
+alias decode-jwt-header="decode-jwt 1"
+alias decode-jwt-payload="decode-jwt 2"
+
+alias rbash="source $HOME/.bashrc"
+alias rzsh="source $HOME/.zshrc"
+
+alias lynx="lynx -vikeys"
+alias savelast='echo !! >> ~/wiki/saved-commands.md'

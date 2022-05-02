@@ -1,0 +1,7 @@
+README.md
+\.git
+\.gitconfig_shared
+\.gitignore
+aliases
+git-templates
+global_ignore

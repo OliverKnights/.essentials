@@ -1,0 +1,251 @@
+" Settings {{{1
+colorscheme mine
+set nocompatible " Don't try to imitate vi
+set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+set autoread " source file changes
+set background=light
+set hidden " change buffers without saving
+set history=10000 " remember : commands
+set ignorecase " ignore case in searching
+set smartcase " if we use caps in search, turn off ignore case
+set infercase " smarter completion
+set mouse=a
+set shortmess+=I
+set tabpagemax=50
+set path=.,,
+set laststatus=2
+set viewoptions=folds,cursor " dont save locally modified options, or changed dir
+set sessionoptions-=options
+set lazyredraw " dont update screen during macros
+set linebreak " dont break in the middle of words
+set conceallevel=2
+set wildcharm=<tab>
+set wildmenu
+set scrolloff=1
+set sidescrolloff=5
+set dictionary=/usr/share/dict/words
+set completeopt = "menuone" " suggested settings for completion
+set shiftwidth=2 " spaces to indent by
+set tabstop=2 " no. of space <Tab> counts for
+set softtabstop=2 " spaces <Tab> counts for when editing
+set expandtab " expand tabs into spaces
+set autowrite " :make writes the buffer if changed, useful for compiling with autocmds
+set nocursorline
+set display+=lastline
+set autoindent
+set smartindent
+set splitbelow
+set splitright
+set noswapfile
+set undofile
+set browsedir=buffer
+set wildignore=*.tar.gz
+set runtimepath+=~/.fzf
+set backspace=indent,eol,start " Make backspace work like normal
+set complete-=i " Don't scan included files for completion
+set smarttab " <tab> inserts whitespace at start of line
+set nrformats-=octal " Don't consider numbers beginning with 0 to be octal
+set incsearch
+set breakindent
+set showbreak=\ + 
+
+set grepprg=grep\ -nP\ --binary-files=without-match\ --exclude-dir=.git\ --exclude-dir=node_modules\ --exclude='*.tar.gz'\ --exclude='tags'\ -R\ $*\ /dev/null
+
+if has('autocmd')
+  filetype plugin indent on
+endif
+if has('syntax') && !exists('g:syntax_on')
+  syntax enable
+endif
+
+if &encoding ==# 'latin1' && has('gui_running')
+  set encoding=utf-8
+endif
+
+if &listchars ==# 'eol:$'
+  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+endif
+
+if v:version > 703 || v:version == 703 && has("patch541")
+  set formatoptions+=j " Delete comment character when joining commented lines
+endif
+
+if !empty(&viminfo)
+  set viminfo^=!
+endif
+
+if has('path_extra')
+  setglobal tags-=./tags tags-=./tags; tags^=./tags;
+endif
+
+if &shell =~# 'fish$' && (v:version < 704 || v:version == 704 && !has('patch276'))
+  set shell=/usr/bin/env\ bash
+endif
+
+" Allow color schemes to do bright colors without forcing bold.
+if &t_Co == 8 && $TERM !~# '^Eterm'
+  set t_Co=16
+endif
+
+" Breaks undo sequence, starting a new change
+if empty(mapcheck('<C-U>', 'i'))
+  inoremap <C-U> <C-G>u<C-U>
+endif
+if empty(mapcheck('<C-W>', 'i'))
+  inoremap <C-W> <C-G>u<C-W>
+endif
+
+" Load matchit.vim, but only if the user hasn't installed a newer version.
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+  runtime! macros/matchit.vim
+endif
+
+" Only in neovim
+if has('nvim')
+  set inccommand=nosplit " show replacements in place
+  set clipboard=unnamedplus " copy to system clipboard always
+endif
+
+" Only in actual vim
+if !has('nvim')
+  if &ttimeoutlen == -1
+    set ttimeout
+    set ttimeoutlen=0
+  endif
+
+  set undodir=~/.vim/undo
+  set clipboard=unnamed
+endif
+
+" Variables {{{1
+let g:sh_fold_enabled = 7
+let g:is_bash	= 1
+
+let g:netrw_banner = 0
+
+let g:mapleader=" "
+
+" Autocmds {{{1
+augroup myAugroup
+  autocmd!
+  autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+  autocmd BufWritePost init.lua source <afile>
+  autocmd BufWritePost init.vim source <afile>
+  autocmd BufWritePost vimrc source <afile>
+
+  autocmd BufNewFile,BufRead .gitconfig_shared set ft=gitconfig
+  autocmd BufNewFile *.sh 0r ~/.vim/templates/skeleton.sh
+  autocmd BufWinLeave *.* mkview
+  autocmd BufWinEnter *.* silent! loadview
+  autocmd BufRead,BufNewFile profile_extra,aliases,*.shlib set filetype=sh
+  autocmd WinEnter,BufEnter * call statusline#active()
+  autocmd WinLeave,BufLeave * call statusline#inactive()
+  autocmd InsertEnter * call statusline#insert()
+  autocmd InsertLeave * call statusline#active()
+  autocmd CursorHold * checktime  
+
+  autocmd FileType c,cpp setlocal path+=/usr/include include&
+  autocmd FileType vim setlocal foldmethod=marker
+augroup END
+
+" User commands {{{1
+command! TestPackage make .
+
+" Bits and bobs stolen from plugins {{{1
+" unimpaired
+nnoremap [q :cp<CR>
+nnoremap ]q :cn<CR>
+nnoremap yoh :set hls!<CR>
+
+" vim-tmux-navigator
+if empty($TMUX)
+  nnoremap <silent> <C-h> <cmd>call tmux#VimNavigate('h')<cr>
+  nnoremap <silent> <C-j> <cmd>call tmux#VimNavigate('j')<cr>
+  nnoremap <silent> <C-k> <cmd>call tmux#VimNavigate('k')<cr>
+  nnoremap <silent> <C-l> <cmd>call tmux#VimNavigate('l')<cr>
+else
+  nnoremap <silent> <C-h> <cmd>call tmux#TmuxAwareNavigate('h')<cr>
+  nnoremap <silent> <C-j> <cmd>call tmux#TmuxAwareNavigate('j')<cr>
+  nnoremap <silent> <C-k> <cmd>call tmux#TmuxAwareNavigate('k')<cr>
+  nnoremap <silent> <C-l> <cmd>call tmux#TmuxAwareNavigate('l')<cr>
+endif
+
+" User mappings {{{1
+
+" Fuzzy finder
+nnoremap <Leader>zf :FZF<CR>
+
+" Find files
+nnoremap <Leader>fc :find <C-R>=fnameescape(expand('%:p:h')).'/**/*'<CR>
+nnoremap <Leader>fv :vert sfind <C-R>=fnameescape(expand('%:p:h')).'/**/*'<CR>
+
+" Edit files
+nnoremap <Leader>ec :e <C-R>=fnameescape(expand('%:p:h'))<CR> " From current file path
+nnoremap <Leader>ev :vert sp <C-R>=fnameescape(expand('%:p:h'))<CR> " From current file path
+
+" Grep 
+nnoremap <Leader>gr :silent grep --exclude-dir=vendor '\b\b' .<left><left><left><left><left>
+" Grep word under cursor
+nnoremap <Leader>gw :exec "silent grep --exclude-dir=vendor '\\b\\b' ."<left><left><left><left><left><left><left><c-r><c-w><c-e> \| :cope<cr>
+" Grep word under cursor, also look in vendor
+nnoremap <Leader>gW :exec "silent grep '\\b\\b' ."<left><left><left><left><left><left><left><left><c-r><c-w><c-e> \| :cope<cr>
+" Grep word under cursor, ONLY look in vendor
+nnoremap <Leader>GW :exec "silent grep '\\b\\b' <left><left><left><left><left><c-r><c-w><c-e>vendor" \| :cope<cr>
+
+nnoremap <Leader>ss :mksession! ~/.local/share/nvim/session/
+nnoremap <Leader>so :source ~/.local/share/nvim/session/
+
+nnoremap <Leader>bo :bro ol<CR>
+
+" Open a tab with a new project
+nnoremap <Leader>tw :tabe ~/wiki/ \| lcd %<S-Left><S-Left><S-Left><left>
+nnoremap <Leader>t. :tabe ~/.dots/ \| lcd %<S-Left><S-Left><S-Left><left>
+nnoremap <Leader>te :tabe ~/.essentials/ \| lcd %<S-Left><S-Left><S-Left><left>
+
+" Vim
+nnoremap <Leader>vi <cmd>e $MYVIMRC<cr>
+nnoremap <Leader>vp <cmd>e $HOME/.vim/lua/plugins.lua<cr>
+nnoremap <Leader>vr <cmd>source $MYVIMRC<cr>
+nnoremap <Leader>vc <cmd>e $HOME/.vim/colors/mine.vim<cr>
+nnoremap <Leader>vl <cmd>luafile %<cr>
+
+" Markdown
+nnoremap <Leader>ml a[]()<esc>hhi
+nnoremap <Leader>mc <cmd>e <cfile><CR>
+nnoremap <Leader>um :vimgrep '^#' % \| cope<cr> " navigation
+
+" Tmux
+nnoremap <Leader>ts :lua tmux_send_markdown_code_block()<CR>
+nnoremap <Leader>td :lua tmux_send_line("C-d", true)<CR>
+nnoremap <Leader>tc :lua tmux_send_line("C-c", true)<CR>
+
+" Utils
+nnoremap <Leader>uw <cmd>%s/\s\+/\ /g<cr>
+nnoremap <Leader>um :!mkdir -p %:h<CR> " Make the directory for which the current file should be in
+
+nnoremap <Leader>wd <cmd>lcd %:p:h<cr> " Working dir
+
+"nnoremap <Leader>x :1winc w<cr>
+"nnoremap <Leader>c :2winc w<cr>
+"nnoremap <Leader>v :3winc w<cr>
+"nnoremap <Leader>s :4winc w<cr>
+"nnoremap <Leader>d :5winc w<cr>
+"nnoremap <Leader>f :6winc w<cr>
+"nnoremap <Leader>w :7winc w<cr>
+"nnoremap <Leader>e :8winc w<cr>
+"nnoremap <Leader>r :9winc w<cr>
+
+" Cmd line editing similar to readline
+cnoremap <c-a> <Home>
+cnoremap <c-b> <Left>
+
+" Terminal
+tnoremap t <Esc> <C-\><C-n>
+
+" Fix open in browser
+nmap gx <Plug>NetrwBrowseX
+nnoremap <silent> <Plug>NetrwBrowseX :call netrw#BrowseX(expand((exists("g:netrw_gx")? g:netrw_gx : '<cfile>')),netrw#CheckIfRemote())<CR>
+
+if has('nvim')
+  lua require('config')
+endif

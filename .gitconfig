@@ -1,0 +1,5 @@
+[user]
+  email = 9830961+OliverKnights@users.noreply.github.com
+  name = Oliver Knights
+[include]
+  path = ~/.essentials/.gitconfig_shared
