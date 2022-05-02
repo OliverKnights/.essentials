@@ -135,8 +135,8 @@ augroup myAugroup
 
   autocmd BufNewFile,BufRead .gitconfig_shared set ft=gitconfig
   autocmd BufNewFile *.sh 0r ~/.vim/templates/skeleton.sh
-  autocmd BufWinLeave *.* mkview
-  autocmd BufWinEnter *.* silent! loadview
+  autocmd BufWinLeave * mkview
+  autocmd BufWinEnter * silent! loadview
   autocmd BufRead,BufNewFile profile_extra,aliases,*.shlib set filetype=sh
   autocmd WinEnter,BufEnter * call statusline#active()
   autocmd WinLeave,BufLeave * call statusline#inactive()
