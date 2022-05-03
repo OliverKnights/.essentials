@@ -3,8 +3,6 @@ alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
 alias ll='ls -alF'
 
-alias cd='cl'
-
 alias nnn='nnn -H -e'
 
 alias k="kubectl"

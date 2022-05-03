@@ -139,8 +139,8 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # Alias definitions.
-[ -f $HOME/.essentials/alises ] && source $HOME/.essentials/alises
-[ -f $HOME/.dots/alises_extra ] && source $HOME/.dots/alises_extra
+[[ -f $HOME/.essentials/aliases ]] && source $HOME/.essentials/aliases
+[[ -f $HOME/.dots/aliases_extra ]] && source $HOME/.dots/aliases_extra
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -183,6 +183,8 @@ PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
 # twilio autocomplete setup
 TWILIO_AC_BASH_SETUP_PATH=$HOME/.twilio-cli/autocomplete/bash_setup && test -f $TWILIO_AC_BASH_SETUP_PATH && source $TWILIO_AC_BASH_SETUP_PATH;
 
-# >>>> Vagrant command completion (start)
-. /opt/vagrant/embedded/gems/2.2.19/gems/vagrant-2.2.19/contrib/bash/completion.sh
-# <<<<  Vagrant command completion (end)
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+
+complete -C /home/oliver/go/bin/gocomplete go

@@ -1,3 +1,11 @@
+# if running bash
+if [ -n "$BASH_VERSION" ]; then
+    # include .bashrc if it exists
+    if [ -f "$HOME/.bashrc" ]; then
+	. "$HOME/.bashrc"
+    fi
+fi
+
 # Add our dotfiles scripts to path
 if [ -d "$HOME/.dots/bin" ] ; then
   PATH="$HOME/.dots/bin:$PATH"
