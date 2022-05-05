@@ -31,9 +31,6 @@ augroup tmux_navigator
 augroup END
 
 function! tmux#ShouldForwardNavigationBackToTmux(tmux_last_pane, at_tab_page_edge)
-  if tmux#TmuxVimPaneIsZoomed()
-    return 0
-  endif
   return a:tmux_last_pane || a:at_tab_page_edge
 endfunction
 

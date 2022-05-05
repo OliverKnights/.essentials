@@ -122,6 +122,7 @@ let g:sh_fold_enabled = 7
 let g:is_bash	= 1
 
 let g:netrw_banner = 0
+"let g:netrw_keepj = '' " Moving around in netrw should be added to jumplist
 
 let g:mapleader=" "
 
@@ -135,8 +136,15 @@ augroup myAugroup
 
   autocmd BufNewFile,BufRead .gitconfig_shared set ft=gitconfig
   autocmd BufNewFile *.sh 0r ~/.vim/templates/skeleton.sh
-  autocmd BufWinLeave * mkview
-  autocmd BufWinEnter * silent! loadview
+
+  " https://vi.stackexchange.com/questions/13864/bufwinleave-mkview-with-unnamed-file-error-32
+  " view files are about 500 bytes
+  " bufleave but not bufwinleave captures closing 2nd tab
+  " nested is needed by bufwrite* (if triggered via other autocmd)
+  " BufHidden for compatibility with `set hidden`
+  autocmd BufWinLeave,BufLeave,BufWritePost,BufHidden,QuitPre ?* nested silent! mkview!
+  autocmd BufWinEnter ?* silent! loadview
+
   autocmd BufRead,BufNewFile profile_extra,aliases,*.shlib set filetype=sh
   autocmd WinEnter,BufEnter * call statusline#active()
   autocmd WinLeave,BufLeave * call statusline#inactive()
@@ -156,6 +164,9 @@ command! TestPackage make .
 nnoremap [q :cp<CR>
 nnoremap ]q :cn<CR>
 nnoremap yoh :set hls!<CR>
+
+" vinegar
+nnoremap - <cmd>Explore<CR>
 
 " vim-tmux-navigator
 if empty($TMUX)
@@ -184,9 +195,16 @@ nnoremap <Leader>ec :e <C-R>=fnameescape(expand('%:p:h'))<CR> " From current fil
 nnoremap <Leader>ev :vert sp <C-R>=fnameescape(expand('%:p:h'))<CR> " From current file path
 
 " Grep 
-nnoremap <Leader>gr :silent grep --exclude-dir=vendor '\b\b' .<left><left><left><left><left>
+nnoremap <Leader>gr :Grep<space>
+command! -nargs=* Grep call MyGrep(<f-args>)
+function! MyGrep(...)
+  exec ":silent grep --exclude-dir=vendor '\\b" . join(a:000, " ") . "\\b' ."
+  redraw!
+  cope
+endfunction
+
 " Grep word under cursor
-nnoremap <Leader>gw :exec "silent grep --exclude-dir=vendor '\\b\\b' ."<left><left><left><left><left><left><left><c-r><c-w><c-e> \| :cope<cr>
+nnoremap <Leader>gw :exec "silent grep --exclude-dir=vendor '\\b\\b' ."<left><left><left><left><left><left><left><c-r><c-w><c-e> \| :cope<cr> 
 " Grep word under cursor, also look in vendor
 nnoremap <Leader>gW :exec "silent grep '\\b\\b' ."<left><left><left><left><left><left><left><left><c-r><c-w><c-e> \| :cope<cr>
 " Grep word under cursor, ONLY look in vendor
@@ -224,16 +242,6 @@ nnoremap <Leader>uw <cmd>%s/\s\+/\ /g<cr>
 nnoremap <Leader>um :!mkdir -p %:h<CR> " Make the directory for which the current file should be in
 
 nnoremap <Leader>wd <cmd>lcd %:p:h<cr> " Working dir
-
-"nnoremap <Leader>x :1winc w<cr>
-"nnoremap <Leader>c :2winc w<cr>
-"nnoremap <Leader>v :3winc w<cr>
-"nnoremap <Leader>s :4winc w<cr>
-"nnoremap <Leader>d :5winc w<cr>
-"nnoremap <Leader>f :6winc w<cr>
-"nnoremap <Leader>w :7winc w<cr>
-"nnoremap <Leader>e :8winc w<cr>
-"nnoremap <Leader>r :9winc w<cr>
 
 " Cmd line editing similar to readline
 cnoremap <c-a> <Home>
