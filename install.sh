@@ -19,12 +19,27 @@ function maybe_clone_essentials() {
   fi
 }
 
+function git_install_ctags() {
+  path="$HOME"/src/ctags
+  if [[ ! -d "$path" ]]; then
+    git clone https://github.com/universal-ctags/ctags.git "$path"
+  fi
+
+  pushd "$path"
+  ./autogen.sh
+  ./configure
+  make
+  sudo make install
+  popd
+}
+
 function install_ubuntu() {
   sudo apt-get update
   sudo apt-get install -y \
     vim \
     stow \
     tmux
+  git_install_ctags
 }
 
 function install_macos() {
@@ -32,6 +47,8 @@ function install_macos() {
     vim \
     stow \
     tmux
+
+  brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 }
 
 function install() {
