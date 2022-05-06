@@ -47,6 +47,7 @@ export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
 export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
+# https://stackoverflow.com/questions/40549332/how-to-check-if-ssh-agent-is-already-running-in-bash/48509425#48509425
 # Ensure agent is running
 ssh-add -l &>/dev/null
 if [ "$?" == 2 ]; then

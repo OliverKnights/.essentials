@@ -62,9 +62,9 @@ function install() {
 }
 
 function symlink() {
-  mkdir "$backup_dir"
+  mkdir -p "$backup_dir"
   for file in .bashrc .bash_profile .gitconfig; do
-    [[ -f "$HOME/${file}" ]] && mv "$HOME/${file}" /tmp/backups/
+    [[ -f "$HOME/${file}" ]] && mv "$HOME/${file}" "$backup_dir"
   done
   pushd "$essentials_dir"
   stow .
