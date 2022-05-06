@@ -51,6 +51,7 @@ SSH_ENV="$HOME/.ssh/agent-environment"
 
 function start_agent {
   echo "Initialising new SSH agent..."
+  rm -f "${SSH_ENV}"
   /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
   echo succeeded
   chmod 600 "${SSH_ENV}"
@@ -59,13 +60,16 @@ function start_agent {
 }
 
 # Source SSH settings, if applicable
-if [ -f "${SSH_ENV}" ]; then
-  . "${SSH_ENV}" > /dev/null
-  ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+if ! /usr/bin/ssh-add -l &>/dev/null; then
+  if [ -f "${SSH_ENV}" ]; then
+    . "${SSH_ENV}" > /dev/null
+    # If there's not an agent running with the pid sourced from agent-environment, start a new one
+    ps -ef | grep "\<${SSH_AGENT_PID}\>" | grep ssh-agent$ > /dev/null || {
+      start_agent;
+    }
+  else
     start_agent;
-  }
-else
-  start_agent;
+  fi
 fi
 
 # Source any overrides
