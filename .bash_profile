@@ -47,29 +47,31 @@ export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
 export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
-SSH_ENV="$HOME/.ssh/agent-environment"
+# Ensure agent is running
+ssh-add -l &>/dev/null
+if [ "$?" == 2 ]; then
+  # Could not open a connection to your authentication agent.
 
-function start_agent {
-  echo "Initialising new SSH agent..."
-  rm -f "${SSH_ENV}"
-  /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-  echo succeeded
-  chmod 600 "${SSH_ENV}"
-  . "${SSH_ENV}" > /dev/null
-  /usr/bin/ssh-add;
-}
+  # Load stored agent connection info.
+  echo "Loading ssh-agent env."
+  test -r ~/.ssh-agent && eval "$(<~/.ssh-agent)" >/dev/null
 
-# Source SSH settings, if applicable
-if ! /usr/bin/ssh-add -l &>/dev/null; then
-  if [ -f "${SSH_ENV}" ]; then
-    . "${SSH_ENV}" > /dev/null
-    # If there's not an agent running with the pid sourced from agent-environment, start a new one
-    ps -ef | grep "\<${SSH_AGENT_PID}\>" | grep ssh-agent$ > /dev/null || {
-      start_agent;
-    }
-  else
-    start_agent;
+  ssh-add -l &>/dev/null
+  if [ "$?" == 2 ]; then
+    echo "Starting ssh-agent"
+    # Start agent and store agent connection info.
+    (umask 066; ssh-agent > ~/.ssh-agent)
+    eval "$(<~/.ssh-agent)" >/dev/null
   fi
+fi
+
+# Load identities
+ssh-add -l &>/dev/null
+if [ "$?" == 1 ]; then
+  # The agent has no identities.
+  # Time to add one.
+  echo "No identities"
+  ssh-add
 fi
 
 # Source any overrides
