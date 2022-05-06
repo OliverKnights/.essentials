@@ -2,6 +2,7 @@
 colorscheme mine
 set nocompatible " Don't try to imitate vi
 set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+set directory^=$HOME/.vim/swap// " Put swapfiles in one place
 set autoread " source file changes
 set background=light
 set hidden " change buffers without saving
@@ -36,7 +37,6 @@ set autoindent
 set smartindent
 set splitbelow
 set splitright
-set noswapfile
 set undofile
 set browsedir=buffer
 set wildignore=*.tar.gz
