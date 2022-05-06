@@ -53,13 +53,13 @@ hi! MyNormalNC ctermfg=7 ctermbg=8 cterm=NONE
 hi! MyNormal ctermfg=7 ctermbg=0 cterm=NONE
 hi! NormalFloat ctermfg=7 ctermbg=NONE cterm=NONE
 hi! DiffAdd ctermfg=3 ctermbg=NONE cterm=NONE
-hi! diffAdded ctermfg=3 ctermbg=NONE cterm=NONE
-hi! gitcommitDiff ctermfg=3 ctermbg=NONE cterm=NONE
+hi! diffAdded ctermfg=NONE ctermbg=3 cterm=NONE
+hi! gitcommitDiff ctermfg=7 ctermbg=NONE cterm=NONE
 hi! DiffChange ctermfg=6 ctermbg=NONE cterm=NONE
 hi! diffChanged ctermfg=6 ctermbg=NONE cterm=NONE
-hi! DiffDelete ctermfg=6 ctermbg=NONE cterm=NONE
-hi! diffRemoved ctermfg=6 ctermbg=NONE cterm=NONE
-hi! DiffText ctermfg=8 ctermbg=NONE cterm=NONE
+hi! DiffDelete ctermfg=9 ctermbg=NONE cterm=NONE
+hi! diffRemoved ctermfg=0 ctermbg=9 cterm=NONE
+hi! DiffText ctermfg=7 ctermbg=NONE cterm=NONE
 
 " Quickfix
 hi! QuickFixLine ctermfg=NONE ctermbg=8 cterm=NONE
