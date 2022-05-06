@@ -122,7 +122,7 @@ let g:sh_fold_enabled = 7
 let g:is_bash	= 1
 
 let g:netrw_banner = 0
-"let g:netrw_keepj = '' " Moving around in netrw should be added to jumplist
+let g:netrw_list_hide = '^\.\.\/$,^\.\/$' " Hide current and parent directory 
 
 let g:mapleader=" "
 
@@ -166,7 +166,7 @@ nnoremap ]q :cn<CR>
 nnoremap yoh :set hls!<CR>
 
 " vinegar
-nnoremap - <cmd>Explore<CR>
+nnoremap - <cmd>call myfuncs#NetrwUp()<cr>
 
 " vim-tmux-navigator
 if empty($TMUX)
