@@ -3,6 +3,7 @@
 set -euo pipefail
 
 essentials_dir="$HOME/.essentials"
+backup_dir=/tmp/dots-backups
 
 # returns: Darwin | Ubuntu | Arch Linux
 function get_os() {
@@ -36,6 +37,7 @@ function git_install_ctags() {
 function install_ubuntu() {
   sudo apt-get update
   sudo apt-get install -y \
+    pkg-config \
     vim \
     stow \
     tmux
@@ -60,6 +62,10 @@ function install() {
 }
 
 function symlink() {
+  mkdir "$backup_dir"
+  for file in .bashrc .bash_profile .gitconfig do;
+    [[ -f "$HOME/${file}" ]] && mv "$HOME/${file}" /tmp/backups/
+  fi
   pushd "$essentials_dir"
   stow .
   popd
