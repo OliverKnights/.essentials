@@ -7,6 +7,8 @@ alias nnn='nnn -H -e'
 
 alias k="kubectl"
 
+alias :e="$EDITOR"
+
 # tig
 alias ts="tig status"
 
