@@ -1,6 +1,7 @@
 .config/nvim/plugin/packer_compiled.lua
-.vim/view
-.vim/undo
+.vim/view/*
+.vim/undo/*
+.vim/swap/*
 bin/td
 .emacs.d/*
 .vim/.netrwhist
